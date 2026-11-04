@@ -1,5 +1,10 @@
 # The Architect's Notebook
 
+[![Deploy docs](https://github.com/jeetparekh3005/the-architects-notebook/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/jeetparekh3005/the-architects-notebook/actions/workflows/deploy-docs.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
+📖 **Read it as a site:** <https://jeetparekh3005.github.io/the-architects-notebook/>
+
 A working notebook on software architecture — patterns, algorithms, and the design of
 scalable systems, with real-world case studies and the trade-offs behind every decision.
 
@@ -63,3 +68,18 @@ A rough order of attack — depth over breadth, one node at a time:
 - Every case study ends with a **Steal / Avoid** section.
 - Every non-trivial choice gets an ADR in [`decisions/`](./decisions).
 - Diagrams live in [`assets/diagrams/`](./assets/diagrams) and are referenced, not inlined.
+
+## Running the site locally
+
+```bash
+pip install -r requirements-docs.txt
+mkdocs serve        # http://127.0.0.1:8000
+```
+
+Pushes to `main` auto-build and deploy to GitHub Pages via
+[`.github/workflows/deploy-docs.yml`](./.github/workflows/deploy-docs.yml).
+
+## Contributing & License
+
+Corrections and new case studies welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
+Licensed under [MIT](./LICENSE).

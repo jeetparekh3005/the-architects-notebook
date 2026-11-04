@@ -4,3 +4,8 @@
 .vscode/
 node_modules/
 *.tmp
+site/
+.cache/
+__pycache__/
+.venv/
+venv/
