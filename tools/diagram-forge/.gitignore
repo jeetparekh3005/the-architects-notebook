@@ -1,0 +1,3 @@
+# built animated pages are regenerable from specs; keep the static SVGs
+dist/*.html
+node_modules/

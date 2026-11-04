@@ -1,0 +1,39 @@
+{
+  "badge": "Deep dive · Apache Cassandra",
+  "title": "A write, and where it lives",
+  "subtitle": "A write is routed by the coordinator to RF replicas; each one appends to its commit log for durability and writes to an in-memory memtable. Memtables flush to immutable SSTables, which compaction merges in the background. The thick path is the low-latency write; dashed work happens off the request.",
+  "width": 1160,
+  "height": 940,
+  "tiers": [
+    { "label": "Client", "y": 80 },
+    { "label": "Coordinator", "y": 228 },
+    { "label": "Replicas · RF 3", "y": 392 },
+    { "label": "Per-replica write path", "y": 556 },
+    { "label": "On disk · SSTables", "y": 716 },
+    { "label": "Background", "y": 862 }
+  ],
+  "nodes": {
+    "client": { "x": 580, "tier": 0, "label": "Client", "sub": "app", "icon": "phone" },
+    "coord":  { "x": 580, "tier": 1, "label": "Coordinator", "sub": "partitioner · hashing", "icon": "hub" },
+    "rA":     { "x": 330, "tier": 2, "label": "Replica 1", "sub": "node", "icon": "server" },
+    "rB":     { "x": 580, "tier": 2, "label": "Replica 2", "sub": "node", "icon": "server" },
+    "rC":     { "x": 830, "tier": 2, "label": "Replica 3", "sub": "node", "icon": "server" },
+    "clog":   { "x": 440, "tier": 3, "label": "Commit Log", "sub": "append · durable", "icon": "journal" },
+    "mem":    { "x": 712, "tier": 3, "label": "Memtable", "sub": "in-memory · sorted", "icon": "grid" },
+    "ss1":    { "x": 340, "tier": 4, "label": "SSTable", "sub": "immutable", "icon": "cyl" },
+    "ss2":    { "x": 540, "tier": 4, "label": "SSTable", "sub": "immutable", "icon": "cyl" },
+    "ss3":    { "x": 740, "tier": 4, "label": "SSTable", "sub": "immutable", "icon": "cyl" },
+    "bloom":  { "x": 950, "tier": 4, "label": "Bloom + Index", "sub": "read filter", "icon": "bloom" },
+    "comp":   { "x": 540, "tier": 5, "label": "Compaction", "sub": "merge SSTables", "icon": "merge" }
+  },
+  "flows": [
+    { "seq": ["client", "coord"] },
+    { "seq": ["coord", "rA"] },
+    { "seq": ["coord", "rB"], "hot": true },
+    { "seq": ["coord", "rC"] },
+    { "seq": ["rB", "clog"] },
+    { "seq": ["rB", "mem"], "hot": true }
+  ],
+  "async": [["mem", "ss3"], ["comp", "ss1"], ["comp", "ss2"], ["comp", "ss3"]],
+  "weak": [["bloom", "ss3"], ["rA", "clog"], ["rC", "mem"]]
+}

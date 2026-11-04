@@ -1,0 +1,46 @@
+{
+  "badge": "Case Study · Ride-hailing",
+  "title": "Anatomy of a dispatch",
+  "subtitle": "A ride request threads the system top to bottom; the thick path is the hot dispatch-to-geo match. Driver locations and trip events run off the request on dashed async links. Pulse = a call, solid = sync, dashed = async, thick = hot path.",
+  "width": 1160,
+  "height": 910,
+  "tiers": [
+    { "label": "Clients", "y": 80 },
+    { "label": "Edge", "y": 262 },
+    { "label": "Core", "y": 460 },
+    { "label": "Services", "y": 612 },
+    { "label": "Stream", "y": 735 },
+    { "label": "Data", "y": 845 }
+  ],
+  "nodes": {
+    "rider":    { "x": 400, "tier": 0, "label": "Rider App", "sub": "mobile", "icon": "phone" },
+    "driver":   { "x": 760, "tier": 0, "label": "Driver App", "sub": "mobile", "icon": "phone" },
+    "gw":       { "x": 580, "tier": 1, "y": 205, "label": "API Gateway", "sub": "edge", "icon": "gate" },
+    "lb":       { "x": 580, "tier": 1, "y": 320, "label": "Load Balancer", "sub": "spreads load", "icon": "branch" },
+    "demand":   { "x": 360, "tier": 2, "label": "Demand", "sub": "riders", "icon": "box" },
+    "dispatch": { "x": 580, "tier": 2, "label": "Dispatch", "sub": "DISCO", "icon": "hub" },
+    "supply":   { "x": 800, "tier": 2, "label": "Supply", "sub": "drivers", "icon": "box" },
+    "surge":    { "x": 150, "tier": 3, "label": "Surge", "sub": "pricing", "icon": "surge" },
+    "geo":      { "x": 355, "tier": 3, "label": "Geo Index", "sub": "H3 cells", "icon": "hex" },
+    "eta":      { "x": 560, "tier": 3, "label": "ETA / Maps", "sub": "routing", "icon": "map" },
+    "trip":     { "x": 745, "tier": 3, "label": "Trip Service", "sub": "lifecycle", "icon": "route" },
+    "pay":      { "x": 925, "tier": 3, "label": "Payments", "sub": "charge", "icon": "card" },
+    "notify":   { "x": 1085, "tier": 3, "label": "Notifications", "sub": "push", "icon": "bell" },
+    "kafka":    { "x": 580, "tier": 4, "label": "Event Stream", "sub": "Kafka", "icon": "stream", "wide": true },
+    "tripdb":   { "x": 330, "tier": 5, "label": "Trip Store", "sub": "OLTP", "icon": "cyl" },
+    "geostore": { "x": 520, "tier": 5, "label": "Geo Store", "sub": "cells", "icon": "cyl" },
+    "cache":    { "x": 720, "tier": 5, "label": "Cache", "sub": "redis", "icon": "stack" },
+    "analytics":{ "x": 960, "tier": 5, "label": "Data Platform", "sub": "lake / OLAP", "icon": "bars" }
+  },
+  "flows": [
+    { "seq": ["rider", "gw", "lb", "dispatch", "trip", "notify", "driver"] },
+    { "seq": ["dispatch", "surge"] },
+    { "seq": ["trip", "pay"] },
+    { "seq": ["dispatch", "geo", "dispatch"], "hot": true },
+    { "seq": ["trip", "tripdb"] },
+    { "seq": ["geo", "geostore"] },
+    { "seq": ["dispatch", "cache", "dispatch"] }
+  ],
+  "async": [["driver", "gw"], ["gw", "kafka"], ["kafka", "geo"], ["trip", "kafka"], ["kafka", "analytics"]],
+  "weak": [["demand", "dispatch"], ["supply", "dispatch"], ["dispatch", "eta"], ["eta", "trip"], ["kafka", "tripdb"], ["kafka", "geostore"], ["notify", "rider"]]
+}

@@ -45,7 +45,15 @@ indexes that link into the topic folders, so every concept has exactly one home.
 - One concept per file; link related notes liberally.
 - Every case study ends with a **Steal / Avoid** section ([template](./case-studies/_template.md)).
 - Every non-trivial choice gets an ADR in [`decisions/`](./decisions) ([template](./decisions/_template.md)).
-- Diagrams live in [`assets/diagrams/`](./assets/diagrams) and are referenced, not inlined.
+- Diagrams are generated, not hand-drawn (see below), and referenced, not inlined.
+
+## Diagrams
+
+Architecture diagrams use the house engine in [`tools/diagram-forge/`](./tools/diagram-forge):
+write a small JSON spec, get an animated diagram in one locked style (Neo-brutal on graph
+paper; pulse = a call, dashed = async, thick = hot path). It exports a static SVG for
+GitHub and the MkDocs site. The `/diagram-forge` skill turns a plain-language description
+of a system into a spec and builds it.
 
 ## Roadmap
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #eef0ea; }
+  #root { max-width: 1180px; margin: 0 auto; padding: 28px 16px 48px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>/*ENGINE*/</script>
+<script>
+  var SPEC = /*SPEC*/;
+  var q = new URLSearchParams(location.search);
+  if (q.has("static")) {
+    Diagram.render(document.getElementById("root"), SPEC, { animate: false, t: parseFloat(q.get("t") || "2.2") });
+  } else {
+    Diagram.render(document.getElementById("root"), SPEC);
+  }
+</script>
+</body>
+</html>
