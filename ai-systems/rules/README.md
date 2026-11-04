@@ -1,4 +1,4 @@
-# NL Business Rules
+# Rules
 
 Natural language turned into executable, verifiable business logic.
 

@@ -21,7 +21,7 @@ cross-cutting concerns, and a decision log. It grows with whatever I'm building.
 | [Patterns](./patterns) | Three altitudes: [code](./patterns/code) (GoF), [architectural](./patterns/architectural) (CQRS, saga, hexagonal), [distributed](./patterns/distributed) (outbox, idempotency) |
 | [Algorithms](./algorithms) | The toolbox: consistent hashing, bloom filters, HyperLogLog, CRDTs, merkle trees, consensus |
 | [System Design](./system-design) | The method: estimation, component catalog, how to approach any design |
-| [AI Systems](./ai-systems) | RAG, agents, extraction, agentic data, NL business rules, LLMOps, AI patterns |
+| [AI Systems](./ai-systems) | RAG, agents, extraction, agentic data, rules, LLMOps, AI patterns |
 | [Case Studies](./case-studies) | Architecture teardowns of real systems, each ending in *steal / avoid* |
 | [Cross-Cutting](./cross-cutting) | Reliability, observability, security, performance, cost |
 | [Decisions](./decisions) | ADR log and *X vs Y, when and why* trade-off frameworks |

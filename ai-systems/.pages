@@ -5,6 +5,6 @@ nav:
   - agents
   - extraction
   - agentic-data
-  - nl-rules
+  - rules
   - llmops
   - patterns
