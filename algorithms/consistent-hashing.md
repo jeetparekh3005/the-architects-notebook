@@ -6,7 +6,7 @@
 ## The problem it solves
 
 Naive sharding uses `hash(key) % N`. Change `N` (add or lose a node) and *almost every*
-key remaps — a full reshuffle and cache stampede. Consistent hashing bounds the churn to
+key remaps - a full reshuffle and cache stampede. Consistent hashing bounds the churn to
 roughly `K/N` keys.
 
 ## How it works
@@ -19,15 +19,15 @@ roughly `K/N` keys.
 ### Virtual nodes
 
 A single point per node gives lumpy load. Give each physical node **V virtual points**
-(e.g. 100–200) scattered around the ring → load evens out and removing a node spreads its
+(e.g. 100-200) scattered around the ring → load evens out and removing a node spreads its
 keys across many others instead of dumping them all on one neighbor.
 
 ## Trade-offs
 
-- ✅ Minimal remapping on membership change; smooth scaling.
-- ✅ Natural fit for replication (walk clockwise to the next R distinct nodes).
-- ⚠️ Still needs virtual nodes for balance; hot *keys* aren't solved (that's a different problem).
-- ⚠️ Rebalancing bandwidth still real — just bounded.
+- Minimal remapping on membership change; smooth scaling.
+- Natural fit for replication (walk clockwise to the next R distinct nodes).
+- Still needs virtual nodes for balance; hot *keys* aren't solved (that's a different problem).
+- Rebalancing bandwidth still real - just bounded.
 
 ## Where it shows up
 

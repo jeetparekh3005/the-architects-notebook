@@ -2,10 +2,10 @@
 
 Where *judgment* is stored. Two kinds of note:
 
-1. **ADRs** — records of specific decisions, numbered `ADR-NNNN`, using the
-   [template](./_template.md). Context → options → decision → consequences.
-2. **Trade-off frameworks** — reusable *"X vs Y, when & why"* notes that outlive any single
-   decision.
+1. **ADRs** - records of specific decisions, numbered `ADR-NNNN`, using the
+ [template](./_template.md). Context → options → decision → consequences.
+2. **Trade-off frameworks** - reusable *"X vs Y, when & why"* notes that outlive any single
+ decision.
 
 Frameworks to capture as they come up:
 

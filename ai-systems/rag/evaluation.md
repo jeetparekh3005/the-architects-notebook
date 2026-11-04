@@ -1,6 +1,6 @@
 # Evaluating RAG
 
-> **One line:** a RAG system has two failure surfaces — **retrieval** and **generation** —
+> **One line:** a RAG system has two failure surfaces - **retrieval** and **generation** -
 > and you must measure them *separately* or you can't tell which half is broken.
 
 ## The two surfaces
@@ -16,11 +16,11 @@ problem. Only the split tells you where to spend effort.
 ## Building the eval set
 
 - Start with a **golden set** of real questions + expected answers + the passages that
-  should have been retrieved. 50 good examples beat 5,000 synthetic ones.
-- Grow it from production traces — every thumbs-down becomes a test case.
+ should have been retrieved. 50 good examples beat 5,000 synthetic ones.
+- Grow it from production traces - every thumbs-down becomes a test case.
 - Keep a **regression set** so a prompt/model/chunking change can't silently degrade.
 
-## LLM-as-judge — with guardrails
+## LLM-as-judge - with guardrails
 
 Judges are useful but biased (verbosity, position, self-preference). Mitigate:
 calibrate against human labels on a sample, use pairwise comparison over absolute scores,
@@ -30,7 +30,7 @@ and pin the judge model/prompt so scores stay comparable over time.
 
 Wire eval into the pipeline so every change is scored before it ships, and trace
 retrieval + generation in production. **Opik** notes live in
-[`../llmops`](../llmops) — tracing, eval runs, and regression gates.
+[`../llmops`](../llmops) - tracing, eval runs, and regression gates.
 
 ## See also
 

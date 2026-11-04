@@ -1,7 +1,7 @@
-# DDIA — reading companion
+# DDIA - reading companion
 
 Chapter-by-chapter map of *Designing Data-Intensive Applications* (Martin Kleppmann).
-This is an **index**, not a content silo — notes live in the topic folders; this page
+This is an **index**, not a content silo - notes live in the topic folders; this page
 points into them so every concept has one home.
 
 | Ch | Title | Notes live in |

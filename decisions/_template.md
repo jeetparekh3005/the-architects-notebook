@@ -13,13 +13,13 @@ team, deadline) are pushing on this? Keep it factual.
 
 | Option | Pros | Cons |
 |--------|------|------|
-| A — ... | | |
-| B — ... | | |
-| C — ... | | |
+| A - ... | | |
+| B - ... | | |
+| C - ... | | |
 
 ## Decision
 
-What we chose and **why** — the one or two forces that actually tipped it.
+What we chose and **why** - the one or two forces that actually tipped it.
 
 ## Consequences
 
