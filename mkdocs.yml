@@ -27,11 +27,12 @@ theme:
   name: material
   icon:
     repo: fontawesome/brands/github
+    logo: material/notebook-outline
   features:
     - navigation.indexes    # section landing pages are clickable
-    - navigation.expand     # expand the sidebar tree by default
     - navigation.top        # back-to-top button
     - navigation.tracking   # url tracks the active anchor
+    - navigation.prune      # keep the rendered nav DOM lean
     - navigation.instant
     - navigation.footer     # prev/next links at the page bottom
     - toc.follow
@@ -60,7 +61,6 @@ plugins:
   - same-dir      # allows docs_dir to be the repo root (where mkdocs.yml lives)
   - search
   - awesome-pages # auto-builds nav from the folder tree; order via .pages files
-  - roamlinks     # resolves [[wiki-style]] links by filename
 
 markdown_extensions:
   - admonition

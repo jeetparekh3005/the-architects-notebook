@@ -20,7 +20,7 @@ The shape of the system - components, data flow, storage. Reference a diagram in
 ## Key decisions
 
 The 3-5 choices that define this system and why they made them. Link to the relevant
-[[algorithm]] or [[pattern]] note.
+algorithm or pattern note.
 
 ## Failure modes & trade-offs
 

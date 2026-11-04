@@ -6,12 +6,12 @@ points into them so every concept has one home.
 
 | Ch | Title | Notes live in |
 |----|-------|---------------|
-| 1 | Reliable, Scalable, Maintainable | [[cross-cutting]] |
+| 1 | Reliable, Scalable, Maintainable | [Cross-Cutting](../cross-cutting/README.md) |
 | 2 | Data Models & Query Languages | [`foundations/data-systems`](../foundations/data-systems) |
-| 3 | Storage & Retrieval (LSM, B-trees) | [`foundations/data-systems`](../foundations/data-systems), [[lsm-vs-btree]] |
+| 3 | Storage & Retrieval (LSM, B-trees) | [`foundations/data-systems`](../foundations/data-systems), *LSM vs B-tree* |
 | 4 | Encoding & Evolution | [`foundations/data-systems`](../foundations/data-systems) |
 | 5 | Replication | [`foundations/distributed-systems`](../foundations/distributed-systems) |
-| 6 | Partitioning | [`foundations/distributed-systems`](../foundations/distributed-systems), [[consistent-hashing]] |
+| 6 | Partitioning | [`foundations/distributed-systems`](../foundations/distributed-systems), [consistent hashing](../algorithms/consistent-hashing.md) |
 | 7 | Transactions | [`foundations/distributed-systems`](../foundations/distributed-systems) |
 | 8 | The Trouble with Distributed Systems | [`foundations/distributed-systems`](../foundations/distributed-systems) |
 | 9 | Consistency & Consensus | [`foundations/distributed-systems`](../foundations/distributed-systems) |

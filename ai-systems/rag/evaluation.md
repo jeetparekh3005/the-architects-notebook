@@ -34,5 +34,5 @@ retrieval + generation in production. **Opik** notes live in
 
 ## See also
 
-[[ai-systems/rag/chunking]] · [[ai-systems/rag/reranking]] · [[cross-cutting]] (hallucination, cost, latency) ·
-[[decisions]] (RAG vs fine-tune vs long-context)
+*chunking* · *reranking* · [cross-cutting](../../cross-cutting/README.md) (hallucination, cost, latency) ·
+[decisions](../../decisions/README.md) (RAG vs fine-tune vs long-context)

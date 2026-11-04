@@ -31,9 +31,10 @@ keys across many others instead of dumping them all on one neighbor.
 
 ## Where it shows up
 
-Dynamo/Cassandra partitioning, memcached client rings, CDNs, [[foundations/distributed-systems]]
-replication placement, load balancers with sticky routing. See DDIA Ch 6 ([[reading/ddia]]).
+Dynamo/Cassandra partitioning, memcached client rings, CDNs,
+[distributed systems](../foundations/distributed-systems/README.md) replication placement,
+load balancers with sticky routing. See DDIA Ch 6 ([reading notes](../reading/ddia.md)).
 
 ## See also
 
-[[quorum]] · [[gossip]] · [[merkle-trees]] (anti-entropy repair in the same systems)
+*quorum* · *gossip* · *merkle trees* (anti-entropy repair in the same systems)

@@ -32,6 +32,8 @@ jobs:
         run: pip install -r requirements-docs.txt
       - name: Build site
         run: mkdocs build
+        env:
+          DISABLE_MKDOCS_2_WARNING: "true"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

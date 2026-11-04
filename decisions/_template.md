@@ -33,4 +33,4 @@ What we chose and **why** - the one or two forces that actually tipped it.
 
 ## Links
 
-Related notes: [[...]]
+Related notes: (link related pages here)

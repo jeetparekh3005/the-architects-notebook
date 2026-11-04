@@ -10,5 +10,6 @@ the line between a teardown and an architect's note.
 - [`chains/`](./chains) - Bitcoin, Ethereum, a modern L2
 - [`ai/`](./ai) - Perplexity, Cursor, Harvey, Copilot
 
-Each study links *back into* the primitives it uses - [[consistent-hashing]], [[quorum]],
-a [[pattern]] - so the notebook reads as one connected graph.
+Each study links back into the primitives it uses (for example
+[consistent hashing](../algorithms/consistent-hashing.md)) so the notebook reads as one
+connected graph.
