@@ -1,12 +1,13 @@
 site_name: The Architect's Notebook
 site_description: >-
-  A working notebook on software architecture — patterns, algorithms, and the
+  A working notebook on software architecture: patterns, algorithms, and the
   design of scalable systems, with real-world case studies and the trade-offs
   behind every decision.
 site_author: Jeet Parekh
 site_url: https://jeetparekh3005.github.io/the-architects-notebook/
 repo_url: https://github.com/jeetparekh3005/the-architects-notebook
 repo_name: jeetparekh3005/the-architects-notebook
+edit_uri: edit/main/
 copyright: Copyright &copy; 2026 Jeet Parekh
 
 # Content lives at the repo root (not a docs/ subdir).
@@ -24,15 +25,21 @@ exclude_docs: |
 
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
   features:
-    - navigation.sections
-    - navigation.top
+    - navigation.indexes    # section landing pages are clickable
+    - navigation.expand     # expand the sidebar tree by default
+    - navigation.top        # back-to-top button
+    - navigation.tracking   # url tracks the active anchor
     - navigation.instant
-    - navigation.tracking
+    - navigation.footer     # prev/next links at the page bottom
     - toc.follow
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
+    - content.action.edit   # "edit this page" button
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -50,12 +57,15 @@ theme:
         name: Switch to light mode
 
 plugins:
-  - same-dir    # allows docs_dir to be the repo root (where mkdocs.yml lives)
+  - same-dir      # allows docs_dir to be the repo root (where mkdocs.yml lives)
   - search
-  - roamlinks   # resolves [[wiki-style]] links by filename
+  - awesome-pages # auto-builds nav from the folder tree; order via .pages files
+  - roamlinks     # resolves [[wiki-style]] links by filename
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - tables
   - toc:
       permalink: true
@@ -68,24 +78,6 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
 
-nav:
-  - Home: README.md
-  - Patterns: patterns/README.md
-  - Algorithms:
-      - Overview: algorithms/README.md
-      - Consistent Hashing: algorithms/consistent-hashing.md
-  - Foundations: foundations/README.md
-  - AI Systems:
-      - Overview: ai-systems/README.md
-      - RAG — Evaluation: ai-systems/rag/evaluation.md
-  - System Design: system-design/README.md
-  - Case Studies:
-      - Overview: case-studies/README.md
-      - Teardown Template: case-studies/_template.md
-  - Cross-Cutting: cross-cutting/README.md
-  - Decisions:
-      - Overview: decisions/README.md
-      - ADR Template: decisions/_template.md
-  - Engineering Leadership: engineering-leadership/README.md
-  - Reading:
-      - DDIA: reading/ddia.md
+# Navigation is generated from the folder tree by the awesome-pages plugin.
+# Order is controlled by .pages files in each directory; every folder has a
+# README.md that serves as its section landing page.

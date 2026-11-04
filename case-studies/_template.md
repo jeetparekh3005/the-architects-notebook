@@ -1,3 +1,7 @@
+---
+title: Case Study Template
+---
+
 # <System> - architecture teardown
 
 - **What it is:** one line.

@@ -1,3 +1,7 @@
+---
+title: ADR Template
+---
+
 # ADR-NNNN: <short title of the decision>
 
 - **Status:** proposed | accepted | superseded by [ADR-XXXX]
