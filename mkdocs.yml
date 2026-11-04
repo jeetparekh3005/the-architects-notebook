@@ -50,6 +50,7 @@ theme:
         name: Switch to light mode
 
 plugins:
+  - same-dir    # allows docs_dir to be the repo root (where mkdocs.yml lives)
   - search
   - roamlinks   # resolves [[wiki-style]] links by filename
 
