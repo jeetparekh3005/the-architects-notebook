@@ -1,12 +1,12 @@
-site_name: The Architect's Notebook
+site_name: WriteAmp
 site_description: >-
-  A working notebook on software architecture: patterns, algorithms, and the
-  design of scalable systems, with real-world case studies and the trade-offs
-  behind every decision.
+  Write once, read many. A working notebook on software architecture: patterns,
+  algorithms, and the design of scalable systems, with real-world case studies
+  and the trade-offs behind every decision.
 site_author: Jeet Parekh
-site_url: https://jeetparekh3005.github.io/the-architects-notebook/
-repo_url: https://github.com/jeetparekh3005/the-architects-notebook
-repo_name: jeetparekh3005/the-architects-notebook
+site_url: https://jeetparekh3005.github.io/writeamp/
+repo_url: https://github.com/jeetparekh3005/writeamp
+repo_name: jeetparekh3005/writeamp
 edit_uri: edit/main/
 copyright: Copyright &copy; 2026 Jeet Parekh
 
