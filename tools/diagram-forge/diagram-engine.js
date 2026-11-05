@@ -301,12 +301,16 @@
           }
         }
       });
-      for (var id in N) {
-        var n = N[id];
-        if (ign[id]) {
-          recolour(id, STYLE.sig);
-          mk("circle", { cx: n.x, cy: n.y, r: 30 + (1 - ign[id]) * 18, fill: "none", stroke: STYLE.sig, "stroke-width": 2, "stroke-opacity": (ign[id] * 0.55).toFixed(3) }, dyn);
-        } else recolour(id, STYLE.ink);
+      // node ignite-glow is an animation affordance only; a static export should not
+      // highlight an arbitrary node based on where a pulse happened to freeze
+      if (animate) {
+        for (var id in N) {
+          var n = N[id];
+          if (ign[id]) {
+            recolour(id, STYLE.sig);
+            mk("circle", { cx: n.x, cy: n.y, r: 30 + (1 - ign[id]) * 18, fill: "none", stroke: STYLE.sig, "stroke-width": 2, "stroke-opacity": (ign[id] * 0.55).toFixed(3) }, dyn);
+          } else recolour(id, STYLE.ink);
+        }
       }
     }
 

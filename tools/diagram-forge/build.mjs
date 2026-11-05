@@ -16,7 +16,12 @@ const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 export function assemble(specJson) {
   const engine = readFileSync(here("./diagram-engine.js"), "utf8");
   const template = readFileSync(here("./template.html"), "utf8");
-  const spec = JSON.parse(specJson);
+  let spec;
+  try {
+    spec = JSON.parse(specJson);
+  } catch (e) {
+    throw new Error("spec is not valid JSON: " + e.message);
+  }
   const title = spec.title || spec.badge || "Diagram";
   return template
     .replace("__TITLE__", () => escapeHtml(title))

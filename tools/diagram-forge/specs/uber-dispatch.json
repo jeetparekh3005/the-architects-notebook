@@ -41,11 +41,10 @@
     { "seq": ["dispatch", "trip"] },
     { "seq": ["trip", "pay"] },
     { "seq": ["trip", "notify"] },
-    { "seq": ["notify", "driver"] },
     { "seq": ["trip", "tripdb"] },
     { "seq": ["geo", "geostore"] },
     { "seq": ["dispatch", "cache"] }
   ],
-  "async": [["driver", "lb"], ["trip", "kafka"], ["kafka", "analytics"]],
+  "async": [["driver", "lb"], ["notify", "driver"], ["trip", "kafka"], ["kafka", "analytics"]],
   "weak": [["dispatch", "eta"], ["notify", "rider"]]
 }
