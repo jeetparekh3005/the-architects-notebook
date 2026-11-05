@@ -1,7 +1,7 @@
 {
   "badge": "Deep dive · Apache Kafka",
   "title": "The life of a record",
-  "subtitle": "A producer hashes a key to a partition and sends the record to that partition's leader broker, which appends it to an on-disk commit log and replicates to the in-sync followers. A consumer group reads the partitions; the controller keeps the metadata. The thick path is the produce to the leader; replication runs off the request.",
+  "subtitle": "A producer hashes the record's key to a partition and sends it to that partition's leader broker, which appends to an on-disk commit log and replicates to the follower replicas that live on the other brokers (the ISR). Every broker leads some partitions and follows others. A consumer group splits the partitions across its members; the KRaft controller holds cluster metadata. The thick path is the produce to a leader.",
   "width": 1200,
   "height": 820,
   "tiers": [
@@ -12,28 +12,33 @@
     { "label": "Consumer group", "y": 700 }
   ],
   "nodes": {
-    "prodA": { "x": 430, "tier": 0, "label": "Producer A", "sub": "client", "icon": "box" },
-    "prodB": { "x": 730, "tier": 0, "label": "Producer B", "sub": "client", "icon": "box" },
-    "part":  { "x": 580, "tier": 1, "label": "Partitioner", "sub": "key -> partition", "icon": "branch" },
-    "b1":    { "x": 330, "tier": 2, "label": "Broker 1", "sub": "P0 leader", "icon": "server" },
-    "b2":    { "x": 580, "tier": 2, "label": "Broker 2", "sub": "P1 leader", "icon": "server" },
-    "b3":    { "x": 830, "tier": 2, "label": "Broker 3", "sub": "followers", "icon": "server" },
-    "ctrl":  { "x": 1075, "tier": 2, "label": "Controller", "sub": "KRaft · metadata", "icon": "hub" },
-    "p0":    { "x": 330, "tier": 3, "label": "Partition 0", "sub": "commit log", "icon": "journal" },
-    "p1":    { "x": 580, "tier": 3, "label": "Partition 1", "sub": "commit log", "icon": "journal" },
-    "p2":    { "x": 830, "tier": 3, "label": "Partition 2", "sub": "replica log", "icon": "journal" },
-    "c1":    { "x": 430, "tier": 4, "label": "Consumer 1", "sub": "reads P0", "icon": "monitor" },
-    "c2":    { "x": 730, "tier": 4, "label": "Consumer 2", "sub": "reads P1", "icon": "monitor" }
+    "prodA": { "x": 450, "tier": 0, "label": "Producer A", "sub": "client", "icon": "box" },
+    "prodB": { "x": 750, "tier": 0, "label": "Producer B", "sub": "client", "icon": "box" },
+    "part":  { "x": 600, "tier": 1, "label": "Partitioner", "sub": "key -> partition", "icon": "branch" },
+    "b1":    { "x": 300, "tier": 2, "label": "Broker 1", "sub": "leads P0", "icon": "server" },
+    "b2":    { "x": 600, "tier": 2, "label": "Broker 2", "sub": "leads P1", "icon": "server" },
+    "b3":    { "x": 900, "tier": 2, "label": "Broker 3", "sub": "leads P2", "icon": "server" },
+    "ctrl":  { "x": 1090, "tier": 2, "label": "Controller", "sub": "KRaft · metadata", "icon": "hub" },
+    "p0":    { "x": 300, "tier": 3, "label": "Partition 0", "sub": "commit log", "icon": "journal" },
+    "p1":    { "x": 600, "tier": 3, "label": "Partition 1", "sub": "commit log", "icon": "journal" },
+    "p2":    { "x": 900, "tier": 3, "label": "Partition 2", "sub": "commit log", "icon": "journal" },
+    "c1":    { "x": 300, "tier": 4, "label": "Consumer 1", "sub": "reads P0", "icon": "monitor" },
+    "c2":    { "x": 600, "tier": 4, "label": "Consumer 2", "sub": "reads P1", "icon": "monitor" },
+    "c3":    { "x": 900, "tier": 4, "label": "Consumer 3", "sub": "reads P2", "icon": "monitor" }
   },
   "flows": [
-    { "seq": ["prodA", "part", "b1"], "hot": true },
-    { "seq": ["prodB", "part", "b2"] },
+    { "seq": ["prodA", "part"] },
+    { "seq": ["prodB", "part"] },
+    { "seq": ["part", "b1"], "hot": true },
+    { "seq": ["part", "b2"] },
+    { "seq": ["part", "b3"] },
     { "seq": ["b1", "p0"] },
     { "seq": ["b2", "p1"] },
     { "seq": ["b3", "p2"] },
     { "seq": ["p0", "c1"] },
-    { "seq": ["p1", "c2"] }
+    { "seq": ["p1", "c2"] },
+    { "seq": ["p2", "c3"] }
   ],
-  "async": [["b1", "b3"], ["b2", "b3"]],
-  "weak": [["ctrl", "b1"], ["ctrl", "b2"], ["ctrl", "b3"]]
+  "async": [["b1", "b2"], ["b2", "b3"]],
+  "weak": [["ctrl", "b3"]]
 }

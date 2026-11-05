@@ -32,7 +32,7 @@
     { "seq": ["coord", "rB"], "hot": true },
     { "seq": ["coord", "rC"] },
     { "seq": ["rB", "clog"] },
-    { "seq": ["rB", "mem"], "hot": true }
+    { "seq": ["rB", "mem"] }
   ],
   "async": [["mem", "ss3"], ["comp", "ss1"], ["comp", "ss2"], ["comp", "ss3"]],
   "weak": [["bloom", "ss3"], ["rA", "clog"], ["rC", "mem"]]

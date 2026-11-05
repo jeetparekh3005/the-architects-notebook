@@ -94,6 +94,36 @@ Add more in `diagram-engine.js` under `ICONS` — each is line art drawn with
 - The hot path should be the single most important route — one thick line reads; three
   do not.
 
+## Genericity and limits (read this)
+
+Be honest about what this is: **a styled renderer with a fixed visual language, not an
+auto-layout tool.** The *style* is fully generic — any spec renders identically. The
+*layout is manual*:
+
+- **You place every `x`.** There is no force-directed or hierarchical auto-layout. `y`
+  comes from the tier; `x` is yours. Two nodes at the same `x` in the same tier overlap.
+- **The router is orthogonal but node-blind.** Each wire routes independently (drop to a
+  staggered mid-channel, across, down). It does not know about other nodes, so a wire
+  *can* pass through a node you didn't intend — typically a long edge that skips a node in
+  a shared row or column, or anything routed across a wide central node.
+
+Three guardrails make this safe to work with:
+
+- **Spec validation.** An unknown node id or bad tier renders a readable error box, not a
+  blank page.
+- **Crossing warnings.** The engine logs `console.warn("wire A->B crosses node X")` for
+  every wire that passes through an unrelated node's box. **Check the console after every
+  build** and nudge an `x` (or re-tier) until it is silent. All three shipped specs are
+  warning-free.
+- **Channel stagger.** Parallel fan-out edges are offset slightly so they separate instead
+  of stacking into one ambiguous line.
+
+What this means in practice: simple-to-moderate diagrams (a request path, a storage
+engine, a service map of ~12–18 nodes) come out clean with a little `x` tuning. Very dense
+graphs, or ones with a big hub that everything must route past, still need deliberate
+placement — the warnings tell you where. Node-aware auto-routing is a deliberate non-goal
+for now; the trade is a tiny, dependency-free engine you fully control.
+
 ## Files
 
 | File | Purpose |

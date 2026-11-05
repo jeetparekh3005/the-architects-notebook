@@ -49,14 +49,21 @@ node build.mjs specs/<name>.json                       # -> dist/<name>.html
 node export-svg.mjs dist/<name>.html dist/<name>.svg    # -> static SVG
 ```
 
-Then **look at it** — open the HTML, or screenshot `dist/<name>.svg`. Check:
+Then **check the console and look at it**. The engine warns on problems:
+
+- **`console.warn("wire A->B crosses node X")`** — a wire runs through a node. Nudge an
+  `x` or re-tier a node until the console is silent. Do not ship a diagram with crossings.
+- A spec error (unknown id, bad tier) renders a red error box instead of the diagram.
+
+Then open the HTML (or screenshot `dist/<name>.svg`) and confirm:
 
 - Every node is visible (no two share an x and y), and no wire crosses a label.
-- The pulse follows the path you meant; the hot path is the right one.
+- Arrowheads point the right way; the pulse follows the path you meant; the hot path is right.
 - The data tier actually lights up (it is on a flow, not just a weak link).
+- The static SVG reads on its own (arrowheads carry direction without the animation).
 
-Fix the spec and rebuild until it reads at a glance. Do not hand over a diagram you
-did not look at.
+Fix the spec and rebuild until the console is silent and it reads at a glance. Do not hand
+over a diagram you did not look at.
 
 ## 4. Hand over
 

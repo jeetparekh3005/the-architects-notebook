@@ -84,7 +84,9 @@
       var sx = Math.sign(B.x - A.x) || 1;
       return trim ? [[A.x + sx * r, A.y], [B.x - sx * r, B.y]] : [[A.x, A.y], [B.x, B.y]];
     }
-    var m = (A.y + B.y) / 2, da = Math.sign(m - A.y), db = Math.sign(B.y - m);
+    // stagger the horizontal channel by the edge's run so parallel fan-out edges
+    // separate instead of stacking on one line (deterministic, so wire == pulse path)
+    var m = (A.y + B.y) / 2 + Math.max(-16, Math.min(16, (B.x - A.x) * 0.045)), da = Math.sign(m - A.y), db = Math.sign(B.y - m);
     return trim
       ? [[A.x, A.y + da * r], [A.x, m], [B.x, m], [B.x, B.y - db * r]]
       : [[A.x, A.y], [A.x, m], [B.x, m], [B.x, B.y]];
@@ -151,6 +153,21 @@
     var animate = opts.animate !== false;
     injectCSS();
 
+    // validate the spec; on error show a readable message rather than a blank page
+    var seen = {}, errs = [];
+    function need(id, where) { if (!spec.nodes[id]) { var m = 'unknown node "' + id + '" in ' + where; if (!seen[m]) { seen[m] = 1; errs.push(m); } } }
+    Object.keys(spec.nodes).forEach(function (id) {
+      var n = spec.nodes[id];
+      if (n.y == null && (n.tier == null || !spec.tiers[n.tier])) errs.push('node "' + id + '" has no valid tier or y');
+    });
+    (spec.flows || []).forEach(function (f) { for (var i = 0; i < f.seq.length - 1; i++) { need(f.seq[i], "a flow"); need(f.seq[i + 1], "a flow"); } });
+    (spec.async || []).forEach(function (e) { need(e[0], "an async link"); need(e[1], "an async link"); });
+    (spec.weak || []).forEach(function (e) { need(e[0], "a weak link"); need(e[1], "a weak link"); });
+    if (errs.length) {
+      host.innerHTML = '<pre style="font-family:ui-monospace,Menlo,monospace;color:#b00020;background:#fff3f3;border:2px solid #b00020;border-radius:8px;padding:16px;white-space:pre-wrap;margin:0">diagram-forge spec error:\n- ' + errs.join("\n- ") + "</pre>";
+      return { stop: function () {} };
+    }
+
     // resolve node y from tier index; keep explicit x
     var N = {};
     Object.keys(spec.nodes).forEach(function (id) {
@@ -169,12 +186,17 @@
     if (spec.title) { var h1 = document.createElement("h1"); h1.className = "df-title"; h1.textContent = spec.title; wrap.appendChild(h1); }
     if (spec.subtitle) { var p = document.createElement("p"); p.className = "df-sub"; p.textContent = spec.subtitle; wrap.appendChild(p); }
     var lg = document.createElement("div"); lg.className = "df-legend"; lg.innerHTML = legendHTML(); wrap.appendChild(lg);
-    var svg = mk("svg", { viewBox: "0 0 " + W + " " + H, class: "df-svg", role: "img", "aria-label": (spec.title || "diagram") }); wrap.appendChild(svg);
+    var aria = (spec.title || "Architecture diagram") + ". Components: " +
+      Object.keys(spec.nodes).map(function (id) { return spec.nodes[id].label; }).join(", ") + ".";
+    var svg = mk("svg", { viewBox: "0 0 " + W + " " + H, class: "df-svg", role: "img", "aria-label": aria }); wrap.appendChild(svg);
     host.appendChild(wrap);
 
     var defs = mk("defs", {}, svg);
     var glow = mk("filter", { id: "df-glow", x: "-200%", y: "-200%", width: "500%", height: "500%" }, defs);
     mk("feGaussianBlur", { stdDeviation: "5" }, glow);
+    // arrowhead so flow direction reads even in a static (non-animated) export
+    var arrow = mk("marker", { id: "df-arrow", viewBox: "0 0 10 10", refX: 8.5, refY: 5, markerWidth: 8, markerHeight: 8, orient: "auto", markerUnits: "userSpaceOnUse" }, defs);
+    mk("path", { d: "M0 1 L9 5 L0 9 Z", fill: STYLE.ink }, arrow);
     var pMinor = mk("pattern", { id: "df-gp", width: 20, height: 20, patternUnits: "userSpaceOnUse" }, defs);
     mk("path", { d: "M20 0 H0 V20", fill: "none", stroke: STYLE.gridMinor, "stroke-width": "1" }, pMinor);
     var pMajor = mk("pattern", { id: "df-gp2", width: 100, height: 100, patternUnits: "userSpaceOnUse" }, defs);
@@ -207,18 +229,37 @@
     });
 
     var drawn = {};
+    function boxOf(id) { var n = N[id], bw = n.wide ? 150 : STYLE.nodeSize, bh = n.wide ? 46 : STYLE.nodeSize; return [n.x - bw / 2, n.x + bw / 2, n.y - bh / 2, n.y + bh / 2]; }
+    function segHitsBox(p0, p1, box) {
+      if (Math.abs(p0[0] - p1[0]) < 1) { var x = p0[0], y1 = Math.min(p0[1], p1[1]), y2 = Math.max(p0[1], p1[1]); return x > box[0] && x < box[1] && y2 > box[2] && y1 < box[3]; }
+      var y = p0[1], x1 = Math.min(p0[0], p1[0]), x2 = Math.max(p0[0], p1[0]); return y > box[2] && y < box[3] && x2 > box[0] && x1 < box[1];
+    }
+    // dev aid: warn (not throw) when a wire segment passes through an unrelated node's box
+    function warnCrossings(a, b, poly) {
+      for (var id in N) {
+        if (id === a || id === b) continue;
+        var box = boxOf(id);
+        for (var i = 0; i < poly.length - 1; i++) {
+          if (segHitsBox(poly[i], poly[i + 1], box)) { if (global.console && console.warn) console.warn('[diagram-forge] wire "' + a + '"->"' + b + '" crosses node "' + id + '" — nudge an x or re-tier.'); break; }
+        }
+      }
+    }
     function wire(a, b, kind) {
       var key = [a, b].sort().join("|");
       if (drawn[key]) return;
       drawn[key] = 1;
       var hot = hotEdge[key];
-      mk("path", {
-        d: dOf(routePts(N, a, b, true)), fill: "none", stroke: STYLE.ink,
+      var poly = routePts(N, a, b, true);
+      var attrs = {
+        d: dOf(poly), fill: "none", stroke: STYLE.ink,
         "stroke-width": hot ? 4 : (kind === "weak" ? 1.4 : 2),
         "stroke-opacity": kind === "weak" ? 0.45 : 1,
         "stroke-dasharray": kind === "async" ? "6 7" : (kind === "weak" ? "2 7" : "none"),
         "stroke-linecap": "round",
-      }, svg);
+      };
+      if (kind !== "weak") attrs["marker-end"] = "url(#df-arrow)";   // direction for the static frame
+      mk("path", attrs, svg);
+      warnCrossings(a, b, poly);
     }
     flows.forEach(function (f) { for (var i = 0; i < f.seq.length - 1; i++) wire(f.seq[i], f.seq[i + 1], "sync"); });
     (spec.async || []).forEach(function (e) { wire(e[0], e[1], "async"); });
