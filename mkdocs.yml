@@ -25,9 +25,10 @@ exclude_docs: |
 
 theme:
   name: material
+  logo: assets/brand/writeamp-mark.svg
+  favicon: assets/brand/writeamp-mark.svg
   icon:
     repo: fontawesome/brands/github
-    logo: material/notebook-outline
   features:
     - navigation.indexes    # section landing pages are clickable
     - navigation.top        # back-to-top button
@@ -44,15 +45,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: cyan
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: cyan
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode

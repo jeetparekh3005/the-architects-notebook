@@ -1,4 +1,4 @@
-# WriteAmp
+<img src="assets/brand/writeamp-wordmark.svg" alt="WriteAmp" width="540">
 
 *Write once, read many.*
 
