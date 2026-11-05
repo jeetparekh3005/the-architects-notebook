@@ -5,7 +5,7 @@
 [![Deploy docs](https://github.com/jeetparekh3005/writeamp/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/jeetparekh3005/writeamp/actions/workflows/deploy-docs.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-Read it as a site: <https://jeetparekh3005.github.io/writeamp/>
+Read it as a site: <https://writeamp.com/>
 
 A working notebook on software architecture: patterns, algorithms, and the design of
 scalable systems, with real-world case studies and the trade-offs behind every decision.
