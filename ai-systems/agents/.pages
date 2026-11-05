@@ -1,1 +1,4 @@
 title: Agents
+nav:
+  - README.md
+  - agent-pipelines-are-distributed-systems.md

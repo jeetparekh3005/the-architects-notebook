@@ -1,0 +1,37 @@
+{
+  "badge": "AI Systems · Agents",
+  "title": "One agent task, run like it will fail",
+  "subtitle": "A task is admitted through a queue, executed step by step by an orchestrator, and checkpointed after every step. The LLM call is the hot path. Side effects never leave the tool runner directly: they are written to an outbox and delivered asynchronously, so a retry can never repeat one.",
+  "width": 1160,
+  "height": 1000,
+  "tiers": [
+    { "label": "Caller", "y": 80 },
+    { "label": "Admission", "y": 240 },
+    { "label": "Orchestration", "y": 400 },
+    { "label": "Remote calls · each can fail", "y": 564 },
+    { "label": "State · side effects", "y": 728 },
+    { "label": "The real world", "y": 888 }
+  ],
+  "nodes": {
+    "caller": { "x": 580, "tier": 0, "label": "Caller", "sub": "user · cron · event", "icon": "phone" },
+    "queue":  { "x": 580, "tier": 1, "label": "Admission queue", "sub": "rate limit · backpressure", "icon": "gate" },
+    "orch":   { "x": 580, "tier": 2, "label": "Orchestrator", "sub": "graph runner · retries", "icon": "hub" },
+    "llm":    { "x": 300, "tier": 3, "label": "LLM gateway", "sub": "timeout · token budget", "icon": "cloud" },
+    "tools":  { "x": 860, "tier": 3, "label": "Tool runner", "sub": "side effects live here", "icon": "box" },
+    "ckpt":   { "x": 440, "tier": 4, "label": "Checkpoint store", "sub": "state after every step", "icon": "journal" },
+    "vec":    { "x": 700, "tier": 4, "label": "Vector index", "sub": "RAG read path", "icon": "cyl" },
+    "outbox": { "x": 920, "tier": 4, "label": "Outbox", "sub": "intent, not effect", "icon": "card" },
+    "extapi": { "x": 920, "tier": 5, "label": "External API", "sub": "idempotency key required", "icon": "hex" }
+  },
+  "flows": [
+    { "seq": ["caller", "queue"] },
+    { "seq": ["queue", "orch"] },
+    { "seq": ["orch", "llm"], "hot": true },
+    { "seq": ["orch", "vec"] },
+    { "seq": ["orch", "tools"] },
+    { "seq": ["orch", "ckpt"] },
+    { "seq": ["tools", "outbox"] }
+  ],
+  "async": [["outbox", "extapi"]],
+  "weak": []
+}

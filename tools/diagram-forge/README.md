@@ -29,7 +29,15 @@ node build.mjs specs/cassandra-write.json            # -> dist/cassandra-write.h
 
 # export a static SVG for GitHub / MkDocs (JS does not run there)
 node export-svg.mjs dist/cassandra-write.html dist/cassandra-write.svg --t=2.2
+
+# export a looping animated GIF for Substack / LinkedIn / anywhere JS does not run
+node export-gif.mjs dist/cassandra-write.html dist/cassandra-write.gif --fps=12
 ```
+
+The GIF export captures exactly one pulse period (`pulsePeriod`, default 4.8s) via
+the deterministic `?static=1&t=` mode, so the loop is seamless, then runs gifsicle
+`-O3` so the mostly-static flat-colour frames delta-compress (a ~6 MB raw encode
+lands around 260 KB). It shares the same cache as the SVG exporter.
 
 - **In the MkDocs site / a blog:** embed the HTML (animated) or the SVG (static).
 - **On GitHub / in Markdown:** use the SVG.
